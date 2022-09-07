@@ -11,15 +11,15 @@ import (
 )
 
 func IndexRender(w io.Writer, context ...interface{}) {
-	indexMd, _ := ioutil.ReadFile("pages/index.md")
-	md2, _ := ioutil.ReadFile("pages/articles/202208/20220801.md")
-	md3, _ := ioutil.ReadFile("pages/articles/202208/20220802.md")
+	indexMd, _ := ioutil.ReadFile("src/pages/index.md")
+	md2, _ := ioutil.ReadFile("src/pages/articles/202208/20220801.md")
+	md3, _ := ioutil.ReadFile("src/pages/articles/202208/20220802.md")
 	indexMd = multiBytesAppend(indexMd, md2, md3)
-	articleDirs, _ := ioutil.ReadDir("pages/articles")
+	articleDirs, _ := ioutil.ReadDir("src/pages/articles")
 	for _, f := range articleDirs {
-		dirs, _ := ioutil.ReadDir("pages/articles/" + f.Name())
+		dirs, _ := ioutil.ReadDir("src/pages/articles/" + f.Name())
 		for _, fa := range dirs {
-			md, _ := ioutil.ReadFile("pages/articles/" + f.Name() + "/" + fa.Name())
+			md, _ := ioutil.ReadFile("src/pages/articles/" + f.Name() + "/" + fa.Name())
 			indexMd = multiBytesAppend(indexMd, md)
 			fmt.Println(fa.Name())
 		}
@@ -31,7 +31,7 @@ func IndexRender(w io.Writer, context ...interface{}) {
 	html, _ := mustache.Render(mustacheHtml, context...)
 
 	// 描画
-	tmpl := template.Must(template.ParseFiles("template/md.html"))
+	tmpl := template.Must(template.ParseFiles("src/template/md.html"))
 	tmpl.ExecuteTemplate(w, "md", template.HTML(html))
 }
 
