@@ -1,9 +1,10 @@
-version: '3'
 services:
   web:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - 80:80
-      - 443:443
+      - 8080:8080
+    volumes:
+      - .:/go/src/blog
+    tty: true
